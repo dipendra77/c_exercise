@@ -11,9 +11,8 @@ Eg: input String: aabbccde
 void char_occurence_number();
 
 int main(){
-char_occurence_number();	
-return 0;
-
+	char_occurence_number();	
+	return 0;
 }
 
 
