@@ -8,15 +8,17 @@ struct Node {
 };
 
 // TIme Complexity -> O(1) Constant time , No list traversal
-struct Node* insertNewNodeStart(struct Node *firstNode, int item)
+struct Node* insertNewNodeStart(struct Node *head, int item)
 {
-    printf("Insert New node at Start\n");
-    struct Node *start,*temp_ptr;
-    start=firstNode;
-    temp_ptr=(struct Node*)malloc(sizeof(struct Node *));
-    temp_ptr->data=item;
-    temp_ptr->link=start;
-    return temp_ptr;
+    // struct Node *head;
+    struct Node * temp;
+    temp=(struct Node *)malloc(sizeof(struct Node));
+    temp->data=item;
+    // temp->link=NULL;
+
+    temp->link=head;
+    head=temp;
+    return head;
 }
 
 /* 
@@ -50,41 +52,57 @@ SinglyLinkedListNode* insertNodeAtTail(SinglyLinkedListNode* head, int data) {
 
 */
 // Add at end function to add node from scratch to reduce time complexity
-struct Node *addNewNodeEnd(struct Node *firstNode, int item)
+struct Node *addNewNodeEnd(struct Node *head, int item)
 {
-    struct Node *start,*end_node;
-    start=firstNode;
-    end_node=(struct Node*)malloc(sizeof(struct Node *));
+    struct Node *start,*newNode;
+    start=head;
+    newNode=(struct Node*)malloc(sizeof(struct Node *));
     
-    end_node->data=item;
-    end_node->link=NULL;
+    newNode->data=item;
+    newNode->link=NULL;
 
-    start->link=end_node;
-    return end_node;
+    if(start == NULL){ //empty Linked listr
+        start=newNode;
+    }
+    else if(start->link == NULL){  // Linked list with one node
+        start->link=newNode;
+    }
+    else if(start->link != NULL){
+        while(start->link){
+            start=start->link;
+        }
+        start->link=newNode;
+    }
+    
+    return head;
 }
 
 // Time coplexity O(n)
-struct Node *addNewNodePos(struct Node *firstNode, int item, int addPos)
+struct Node *addNewNodePos(struct Node *head, int item, int addPos)
 {
-    struct Node *start,*temp_node,*add_node;
-    start=firstNode;
-    add_node=(struct Node*)malloc(sizeof(struct Node *));    
-    add_node->data=item;
-    add_node->link=NULL;
-    temp_node=start;
-    int pos=0;
-    pos++;
+    struct Node *start,*newNode,*prev,*next;
+    start=head;
+    next=head;
+    newNode=(struct Node*)malloc(sizeof(struct Node *));    
+    newNode->data=item;
+    newNode->link=NULL;
+    start=head;
     addPos--;
-    while(pos!=addPos){
-        temp_node=temp_node->link;
-        pos++;
+    if(addPos==0){
+        return head;
+    }
+    else{
+        while(addPos){
+            prev=next;
+            next=next->link;
+            addPos--;
+        }
+        prev->link=newNode;
+        newNode->link=next;
 
     }
-    
-    add_node->link=temp_node->link; 
-    temp_node->link=add_node;
 
-    return start;
+    return head;
 
 }
 
@@ -92,28 +110,31 @@ struct Node *addNewNodePos(struct Node *firstNode, int item, int addPos)
 
 int main()
 {
-    struct Node * start,*ptr;
-    start=(struct Node*)malloc(sizeof(struct Node *));
-    start=NULL;
-    // start->data=10;
-    // start->link=NULL;
+    struct Node * head,*ptr;
+    head=(struct Node*)malloc(sizeof(struct Node *));
+    head->data=500;
+    head->link=NULL;
+    head=insertNewNodeStart(head,40);  // Returns start addresss 
+    head=insertNewNodeStart(head,30);
+    head=insertNewNodeStart(head,20);
     
-    ptr=start;
-    ptr=addNewNodeEnd(ptr,20); // returns end Address of node after insertion
-    ptr=addNewNodeEnd(ptr,30); 
-    ptr=addNewNodeEnd(ptr,40);  
-    ptr=start;  // point to start before adding node to start or traversing from start
-    ptr=insertNewNodeStart(ptr,40);  // Returns start addresss 
-    ptr=insertNewNodeStart(ptr,30);
-    ptr=insertNewNodeStart(ptr,20);
-    ptr=addNewNodePos(ptr, 100, 4);
+    head=addNewNodeEnd(head,50); // returns start Address of node after insertion
+    head=addNewNodeEnd(head,60); 
+    head=addNewNodeEnd(head,70);  
+    head=addNewNodePos(head, 100, 2);
 
 
     //traverse the Linked List 
-    while(ptr!=NULL)
+    ptr=(struct Node *)malloc(sizeof(struct Node));
+    ptr=NULL;
+
+    ptr=head;
+    while(ptr != NULL)
     {
-        printf("%d  ",ptr->data);
+        printf("\n%d  ",ptr->data);
         ptr=ptr->link;
+        
     }
+
     return 0;
 }
