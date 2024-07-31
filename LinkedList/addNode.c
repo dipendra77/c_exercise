@@ -110,7 +110,7 @@ struct Node *addNewNodePos(struct Node *head, int item, int addPos)
 
 int main()
 {
-    struct Node * head,*ptr;
+    struct Node *head, *ptr;
     head=(struct Node*)malloc(sizeof(struct Node *));
     head->data=500;
     head->link=NULL;

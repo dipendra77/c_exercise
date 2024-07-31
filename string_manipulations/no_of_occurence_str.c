@@ -18,7 +18,7 @@ int main(){
 
 void char_occurence_number(){
 
-char a[]= "ccaaabbcd";
+char a[]= "ccaaabbd";
 int size=sizeof(a);
 char out[size];
 int count=1;

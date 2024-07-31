@@ -10,65 +10,112 @@ struct Node {
 
 
 // Add at end function to add node from scratch to reduce time complexity
-struct Node *addNewNodeEnd(struct Node *firstNode, int item)
+struct Node *addNewNodeEnd(struct Node *head, int item)
 {
-    struct Node *start,*end_node;
-    start=firstNode;
-    end_node=(struct Node*)malloc(sizeof(struct Node *));
+    struct Node *start,*newNode;
+    start=head;
+    newNode=(struct Node*)malloc(sizeof(struct Node *));
     
-    end_node->data=item;
-    end_node->link=NULL;
+    newNode->data=item;
+    newNode->link=NULL;
 
-    start->link=end_node;
-    return end_node;
+    if(start == NULL){ //empty Linked listr
+        start=newNode;
+    }
+    else if(start->link == NULL){  // Linked list with one node
+        start->link=newNode;
+    }
+    else if(start->link != NULL){
+        while(start->link){
+            start=start->link;
+        }
+        start->link=newNode;
+    }
+    
+    return head;
 }
 
-struct Node * deleteNodeStart(struct Node *Head)
+struct Node * deleteNodeStart(struct Node *head)
 {
     struct Node * start,*temp;
-    temp=Head;
-    start=Head->link;
-    free(temp);
-    temp=NULL;
+    start=head;
+    if(start==NULL){
+        printf("Linked list is Wmpty!!!!");
+    }
+    else if(start->link == NULL){    // Linked list with 1 node
+        free(start);
+        start=NULL;
+    }
+    else if(start->link!=NULL){
+        temp=start;
+        start=temp->link;
+        free(temp);
+        temp=NULL;
+    }
+
     return start;
 }
 
 struct Node * deleteNodeEnd(struct Node *Head)
 {
-    struct Node * start,*temp;
-    temp=Head;
-    start=Head->link;
+    struct Node * start,*temp, *prev;
+    
+    start = Head;
 
-    while(start)
+    while( start!= NULL)
+    {
+        prev = start;
+        start= start->link;
+    }
+    
+    temp = start;
+    start = prev;
     free(temp);
-    temp=NULL;
+    
     return start;
 }
 
 struct Node * deleteNodePos(struct Node *Head, int pos)
 {
     struct Node * start,*temp;
-    temp=Head;
-    start=Head->link;
-    free(temp);
-    temp=NULL;
+  
     return start;
 }
 
+struct Node *reverseLink(struct Node * head){
+    struct Node *start,*current,*prev,*next;
+    start=head;
+    if( (head==NULL) || (head->link==NULL)){
+        printf("Nothing to reverse\n");
+        return head;
+    }
+
+    prev=NULL;
+    next=NULL;
+    current=head;
+    while(current)
+        {   
+            next=current->link;
+            current->link=prev;
+            prev=current;
+            current=next;
+        }
+
+    return prev;
+}
 
 int main()
 {
-    struct Node * start,*ptr;
-    start=(struct Node*)malloc(sizeof(struct Node *));
-    start->data=10;
-    start->link=NULL;
+    struct Node *head,*ptr;
+    head=(struct Node*)malloc(sizeof(struct Node *));
+    head->data=10;
+    head->link=NULL;
+
+    head=addNewNodeEnd(head,20); // returns end Address of node after insertion
+    head=addNewNodeEnd(head,30); 
+    head=addNewNodeEnd(head,40);  
     
-    ptr=start;
-    ptr=addNewNodeEnd(ptr,20); // returns end Address of node after insertion
-    ptr=addNewNodeEnd(ptr,30); 
-    ptr=addNewNodeEnd(ptr,40);  
-    ptr=start;  // point to start before adding node to start or traversing from start
-    
+    ptr=head;  // point to start before adding node to start or traversing from start
     printf("\nLinked List Before deletion \n");
     //traverse the Linked List 
     while(ptr!=NULL)
@@ -76,11 +123,20 @@ int main()
         printf("%d  ",ptr->data);
         ptr=ptr->link;
     }
-
-    ptr=start;
-    ptr=deleteNodeStart(ptr);
     
-    printf("\nLinked List After deletion \n");
+    // head=deleteNodeStart(head);
+    // ptr=head;
+    // printf("\nLinked List After deletion: ");
+
+    // while(ptr!=NULL)
+    // {
+    //     printf("%d  ",ptr->data);
+    //     ptr=ptr->link;
+    // }
+
+    head=reverseLink(head);
+    ptr=head;
+    printf("\nLinked List After Reversal: ");
 
     while(ptr!=NULL)
     {

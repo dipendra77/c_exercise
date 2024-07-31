@@ -17,7 +17,8 @@ struct Node *current=NULL;
 //     printf("Data: %d\n",headNode->data);
 // }
 
-struct Node *createLinkList(struct Node *headNode, struct Node *next){
+struct Node *createLinkList(struct Node *headNode, struct Node *next)
+{
     headNode->data=45;
     headNode->link=NULL;
     
